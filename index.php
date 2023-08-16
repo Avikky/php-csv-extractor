@@ -49,8 +49,8 @@
 <body>
 <main>
     <?php if(isset($_GET['error'])): ?>
-        <div style="border: 1px solid black; ">
-            <? echo ($_GET['error'])  ?>
+        <div style="border: 1px solid red; padding: 10px;">
+           <?php echo urldecode($_GET['error']);  ?>
         </div>
     <?php endif; ?>
     <br><br>

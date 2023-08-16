@@ -145,14 +145,13 @@ function redirect($resType, $resData){
 
        
 
-
-    $page = ($resType == 'success')? 'resultPage.php' : 'index.php' ;
-    
     $urlparam = '?'. $resType.'='.urlencode($data);
-    $url.= $page;
-    $url.= $urlparam;
 
-    // die($url);
+    $page = ($resType == 'success')? 'resultPage.php' : '' ;
+    
+    $url.= $page. $urlparam;
+
+
     header("Location: $url");
     exit();
 }
