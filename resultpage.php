@@ -1,61 +1,46 @@
-<?php include('extractor.php')?>
+<?php 
+    include('core/extractor.php')
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extracted Data Page</title>
-    <style>
-        body {
-        font-family: Arial, sans-serif;
-        max-width:800px;
-        margin: 2rem auto;
-        background-color: #ccc;
-        }
-        
-        main{
-            border: 1px solid #333;
-            padding: 1.5rem 2.5rem;
-            background-color: rgb(244, 244, 244, 0.5);
-        }
-
-        h2 {
-            text-align: center;
-            margin: 20px 10px;
-            padding: 10px;
-        }    
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-        border: 1px solid #ccc;
-        padding: 8px;
-        text-align: left;
-        }
-
-        th {
-        background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-        background-color: #f2f2f2;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body id="resultpage">
+
+<?php  $data = json_decode($_SESSION['success'], true) ?>
+
 <main>
+   
     <h2>Results</h2><br>
     <table>
         <thead>
-            <th></th>
+            <?php if($data['type'] == 0 || $data['type'] == 3 || $data['type'] == 1 ): ?>
+                <?php foreach($data['headers'] as $key => $value): ?>
+                    <?= '<th>'. $value  .'</th>'; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-            </tr>
+            <?php if(isset($data['content'])): ?>
+                <?php foreach($data['content'] as $content): ?>
+                    <tr>
+                        <td><?= $content['Index'] ?></td>
+                        <td><?= $content['User Id'] ?></td>
+                        <td><?= $content['First Name'] ?></td>
+                        <td><?= $content['Last Name'] ?></td>
+                        <td><?= $content['Sex'] ?></td>
+                        <td><?= $content['Email'] ?></td>
+                        <td><?= $content['Phone'] ?></td>
+                        <td width='100'><?= $content['Date of birth'] ?></td>
+                        <td><?= $content['Job Title'] ?></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php endif; ?>
         </tbody>
     </table>
  

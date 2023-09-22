@@ -1,0 +1,77 @@
+
+#index-main {
+font-family: Arial, sans-serif;
+max-width: 400px;
+margin: 2rem auto;
+background-color: #ccc;
+}
+
+
+main{
+border: 1px solid #333;
+padding: 1.5rem 2.5rem;
+background-color: rgb(244, 244, 244, 0.5);
+}
+
+h2 {
+margin-top: 0;
+}
+
+form {
+margin-bottom: 20px;
+}
+
+label, input {
+display: block;
+width: 100%;
+margin-bottom: 10px;
+}
+
+input[type="submit"] {
+width: auto;
+cursor: pointer;
+}
+button{
+    margin: 0 auto;
+    cursor: pointer;
+    padding: 7px 15px;
+}
+
+
+
+#resultpage {
+    font-family: Arial, sans-serif;
+    width: 90%;
+    margin: 2rem auto;
+    background-color: #ccc;
+    }
+    
+    #resultpage main{
+        border: 1px solid #333;
+        padding: 1.5rem 2.5rem;
+        background-color: rgb(244, 244, 244, 0.5);
+    }
+
+    #resultpage h2 {
+        text-align: center;
+        margin: 20px 10px;
+        padding: 10px;
+    }    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    }
+
+    th {
+    background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+    background-color: #f2f2f2;
+    }

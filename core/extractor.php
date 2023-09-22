@@ -1,16 +1,26 @@
 <?php 
+session_start();
 
 $errorMsg = null;
 $successMsg = null;
 
+//To move between directories from your current directory
 
-// dd($_SERVER);
+// For PHP < 5.3 use:
 
+// $upOne = realpath(dirname(__FILE__) . '/..');
+// In PHP 5.3 to 5.6 use:
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+// $upOne = realpath(__DIR__ . '/..');
+// In PHP >= 7.0 use:
 
+// $upOne = dirname(__DIR__, 1);
+
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    
+   
     $filename = $_FILES['csfile']['name'];
-    $targetFolder = 'uploadedCSV/';
+    $targetFolder = dirname( __FILE__, 2).'/uploadedCSV/';
     $filepath = $targetFolder.basename($filename);
    
     $file = $_FILES['csfile'];
@@ -26,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     //uploadFile
-   
+
     if(!uploadFile($file, $filepath)){
         $errorMsg = "<span style='color: red'>Error occured while uploading file</span>";
         redirect('error',$errorMsg);
@@ -35,25 +45,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     switch ($type) {
         case 1:
-            $successMsg = ['type' => 1, 'data' => $filepath] ;
+            $headers = getCSVHeaders($filepath);
+            $successMsg = ['type' => 1, 'headers' => $headers] ;
             break;
         case 2:
-            $successMsg = ['type' => 2, 'data' => $filepath];
+            $content = extractAllCSVcontent($filepath);
+            $successMsg = ['type' => 2, 'content' => $content];
             break;
         case 3:
-            $successMsg = ['type' => 3, 'data' =>  $filepath];
+            $headers = getCSVHeaders($filepath);
+            $allContents = extractAllCSVcontent($filepath);
+            $successMsg = ['type' => 3, 'headers' =>  $headers, 'content' => $allContents];
             break;
         
         default:
-            $successMsg = ['type' => 0, 'data' =>  $filepath];
+            $headers = getCSVHeaders($filepath);
+            $allContents = extractAllCSVcontent($filepath);
+            $successMsg = ['type' => 3, 'headers' =>  $headers, 'content' => $allContents];
             break;
     }
 
     redirect('success',$successMsg);
 
 
-}else{
+}
+else{
     $errorMsg = "<span style='color:red;'>Cannot process request (invalid request method) </span>";
+   
     redirect('error',$errorMsg);
 }
 
@@ -75,7 +93,7 @@ function validateForm($file, $type){
     if(!isset($type) && !isset($file)){
         return "<span style='color:red'> all fields are required</span>";
     }
-    if($file['size'] > 100){
+    if($file['size'] > 20024){
         return  "<span style='color:red'> File size must not be greater than 100kb</span>";
     }
 
@@ -136,20 +154,26 @@ function redirect($resType, $resData){
         die("<p style='color: red; font-weight: bold'>Response type is undefined</p>");
     };
 
-    $url = $_SERVER['HTTP_REFERER'];   
+   
     if(is_array($resData)){
-        $data = base64_encode(json_encode($resData));
+        $data = json_encode($resData);
     }else{
         $data = $resData;
     }
 
-       
+    $url = $_SERVER['HTTP_ORIGIN']. '/projects/csv_extractor/';   
 
-    $urlparam = '?'. $resType.'='.urlencode($data);
+    $urlparam = '?'. $resType.'='.$resType;
 
-    $page = ($resType == 'success')? 'resultPage.php' : '' ;
+    $page = ($resType == 'success')? 'resultPage.php' : 'index.php' ;
     
     $url.= $page. $urlparam;
+
+    if($resType == 'error'){
+        $_SESSION['error'] =  $data;
+    }else{
+        $_SESSION['success'] =  $data;
+    }
 
 
     header("Location: $url");

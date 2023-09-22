@@ -1,61 +1,32 @@
 
+<?php 
+    session_start();  
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSV Extractor in PHP</title>
-    <style>
-        body {
-        font-family: Arial, sans-serif;
-        max-width: 400px;
-        margin: 2rem auto;
-        background-color: #ccc;
-        }
-        
-
-        main{
-        border: 1px solid #333;
-        padding: 1.5rem 2.5rem;
-        background-color: rgb(244, 244, 244, 0.5);
-        }
-
-        h2 {
-        margin-top: 0;
-        }
-
-        form {
-        margin-bottom: 20px;
-        }
-
-        label, input {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
-        }
-
-        input[type="submit"] {
-        width: auto;
-        cursor: pointer;
-        }
-        button{
-            margin: 0 auto;
-            cursor: pointer;
-            padding: 7px 15px;
-        }
-  </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body id="index-main">
 <main>
     <?php if(isset($_GET['error'])): ?>
-        <div style="border: 1px solid red; padding: 10px;">
-           <?php echo urldecode($_GET['error']);  ?>
-        </div>
+        <?php if(isset($_SESSION['error'])): ?>
+            <div style="border: 1px solid red; padding: 10px;">
+                <?php echo $_SESSION['error'];  ?>
+            </div>
+        <?php endif ?>
     <?php endif; ?>
     <br><br>
     <h2>Submit CSV File</h2><br>
-    <form action="extractor.php" method="post" enctype="multipart/form-data">
+    <form action="core/extractor.php" method="POST" enctype="multipart/form-data">
         <div style="padding: 10px; border: 1px solid #000;">
             <div>
                 <label for="csvFile">CSV File:</label>
