@@ -16,24 +16,32 @@ $successMsg = null;
 
 // $upOne = dirname(__DIR__, 1);
 
+
+
+
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     
-   
-    $filename = $_FILES['csfile']['name'];
-    $targetFolder = dirname( __FILE__, 2).'/uploadedCSV/';
-    $filepath = $targetFolder.basename($filename);
-   
+   // pass each input into a variable 
+
     $file = $_FILES['csfile'];
 
     $type =  $_POST['type'];
 
-    //validate form
+    //validate form inputs
     $validate = validateForm($file, $type);
+
+    
 
     if($validate !== true){
         $errorMsg = $validate;
         redirect('error',$errorMsg);
     }
+
+    // prepare file for upload
+    $filename = $_FILES['csfile']['name'];
+    $targetFolder = dirname( __FILE__, 2).'/uploadedCSV/';
+    $filepath = $targetFolder.basename($filename);
+   
 
     //uploadFile
 
@@ -42,6 +50,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         redirect('error',$errorMsg);
 
     }
+
+    dd(file($filepath,FILE_SKIP_EMPTY_LINES));
 
     switch ($type) {
         case 1:
@@ -69,11 +79,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
 
 }
-else{
-    $errorMsg = "<span style='color:red;'>Cannot process request (invalid request method) </span>";
-   
-    redirect('error',$errorMsg);
-}
 
 function uploadFile($file, $filepath) : bool {
     
@@ -84,6 +89,7 @@ function uploadFile($file, $filepath) : bool {
     return false;
 }
 
+// this is a helper function for debuging response 
 function dd($data) {
     die('<pre>'. json_encode( json_decode(json_encode($data), true), true). '</pre>');
 }

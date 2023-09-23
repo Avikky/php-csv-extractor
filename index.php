@@ -4,8 +4,6 @@
 ?>
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +24,7 @@
     <?php endif; ?>
     <br><br>
     <h2>Submit CSV File</h2><br>
-    <form action="core/extractor.php" method="POST" enctype="multipart/form-data">
+    <form action="core/extractor.php" method="post" enctype="multipart/form-data">
         <div style="padding: 10px; border: 1px solid #000;">
             <div>
                 <label for="csvFile">CSV File:</label>
